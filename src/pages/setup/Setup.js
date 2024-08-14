@@ -5,7 +5,7 @@ import Header from "../../components/layouts/header/Header";
 const Setup = () => {
   return (
     <section className={styles.setupSection}>
-      <Header></Header>
+      <Header />
       <div className={styles.setupWrapper}>
         <div className={styles.setupContainer}>
           <h1 className={styles.setupTitle}>Налаштування пам’ятного запису</h1>

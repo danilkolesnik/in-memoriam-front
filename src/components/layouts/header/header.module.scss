@@ -5,8 +5,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .headerLogo {
   width: 40%;
+}
+
+.settingsIcon {
+  position: absolute;
+  width: 2em;
+  right: 5%;
+  cursor: pointer;
 }

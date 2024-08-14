@@ -1,0 +1,36 @@
+
+.darkOverlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #00000080;
+  top: 0
+}
+
+.sidebarContainer {
+  float: right;
+  width: 70%;
+  height: 100%;
+  background-color: #FFF;
+}
+
+.sidebarHeader {
+  height: 10vh;
+  width: 100%;
+  border-bottom: 1px solid #F2F2F7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5%;
+}
+
+.sidebarClose {
+  width: 7%;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 550px) {
+  .sidebarClose {
+    width: 4%;
+  }
+}

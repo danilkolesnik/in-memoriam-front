@@ -1,0 +1,199 @@
+.profileSection {
+  font-family: CenturyGothic;
+  max-width: 800px;
+  background-color: rgb(255, 255, 255);
+  min-height: 100vh;
+  margin: auto;
+  filter: drop-shadow(0px 0px 20px rgba(53, 54, 78, 0.15));
+}
+
+.profileWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.profileContainer {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.profileBanner {
+  min-height: 150px;
+  height: 20vh;
+  background-color: #F2F2F7;
+}
+
+.imageSettingsContainer {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  left: 50%;
+  top: 13vh;
+  transform: translate(-50%);
+}
+
+.avatarContainer {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.addImage {
+  margin-top: 7px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.mainInfoContainer {
+  text-align: left;
+  margin: 6vh 5% 5vh;
+}
+
+.mainInfoContainer p {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+
+.editButton {
+  font-family: CenturyGothic;
+  color: #000;
+  font-size: 1em;
+  font-weight: 800;
+  border-radius: 50px;
+  background-color: #F2F2F7;
+  padding: 10px 15px;
+  position: absolute;
+  bottom: -13px;
+  right: 0;
+  cursor: pointer;
+}
+
+.infoHeader {
+  display: flex;
+}
+
+.toggleElement {
+  cursor: pointer;
+  width: 50%;
+  padding: 0 0 15px;
+  font-weight: 800;
+  color: #8E8E93;
+  border-bottom: 1px solid #E5E5EA;
+}
+
+.toggleElementActive {
+  cursor: pointer;
+  width: 50%;
+  padding: 0 0 15px;
+  font-weight: 800;
+  color: #000;
+  border-bottom: 1px solid #000;  
+}
+
+.textInfoWrapper {
+  margin: 5%;
+}
+
+.textAreaQuote {
+  font-family: CenturyGothic;
+  font-size: 1.1em;
+  resize: none;
+  width: 100%;
+  padding: 5%;
+  min-height: 90px;
+  border-radius: 12px;
+  border: 1px solid #D1D1D6;
+}
+
+.textAreaInfo {
+  font-family: CenturyGothic;
+  font-size: 1.1em;
+  resize: none;
+  padding: 5%;
+  width: 100%;
+  min-height: 230px;
+  border-radius: 12px;
+  border: 1px solid #D1D1D6;
+}
+
+.textAreaQuote:focus {
+  outline: none;
+  box-shadow:none !important;
+  border: 2px solid #D1D1D6;
+}
+
+.textAreaInfo:focus {
+  outline: none;
+  box-shadow:none !important;
+  border: 2px solid #D1D1D6;
+}
+
+.mediaCardWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1%;
+  margin-top: 3%;
+  padding-bottom: 5vh;
+}
+
+.photoCard {
+  background-color: #F2F2F7;
+  width: 32%;
+  padding-bottom: 32%;
+  margin-bottom: 1%;
+}
+
+@media screen and (min-width: 550px) {
+  .profileBanner {
+    height: 35vh;
+  }
+
+  .imageSettingsContainer {
+    top: 25vh;
+  }
+
+  .avatarContainer {
+    width: 180px;
+    height: 180px;
+  }
+
+  .addImage {
+    width: 36px;
+    height: 36px;
+  }
+
+  .mainInfoContainer {
+    text-align: left;
+    margin: 10vh 5% 5vh;
+  }
+
+  .editButton {
+    bottom: 0;
+  }
+  
+  .textAreaQuote {
+    padding: 2%;
+  }
+  
+  .textAreaInfo {
+    padding: 2%;
+  }
+}
