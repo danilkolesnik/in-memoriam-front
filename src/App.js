@@ -13,15 +13,16 @@ import {
   PROFILE_ROUTE,
   NOT_FOUND,
 } from "./utils/constants";
+import PrivateRoute from 'services/PrivateRoutes';
 
 
 function App() {
   return (
     <Routes>
       <Route path={AUTH_ROUTE} element={<Auth />} />
-      <Route path={SETUP_ROUTE} element={<Setup />} />
-      <Route path={EDIT_ROUTE} element={<Edit />} />
-      <Route path={PROFILE_ROUTE} element={<Profile />} />
+      <Route path={SETUP_ROUTE} element={<PrivateRoute component={Setup} />} />
+      <Route path={EDIT_ROUTE} element={<PrivateRoute component={Edit} />} />
+      <Route path={PROFILE_ROUTE} element={<PrivateRoute component={Profile} />} />
       <Route path={NOT_FOUND} element={<NotFound />} />
     </Routes>
   );

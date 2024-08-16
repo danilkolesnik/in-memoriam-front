@@ -1,15 +1,88 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import styles from "./edit.module.scss";
 import Header from "../../components/layouts/header/Header";
+import axios from "axios";
+import { DateValidate } from 'services/DateValidate';
 
 const Edit = () => {
+  const history = useNavigate();
+  const [userInfo, setUserInfo] = useState(null);
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [middleName, setMiddleName] = useState("");
+  const [birthDate, setBirthDate] = useState(userInfo?.birthDate || "");
+  const [passDate, setPassDate] = useState(userInfo?.passDate || "");
+
+  useEffect(() => {
+    setUserInfo(JSON.parse(localStorage.getItem("userData")));
+  }, []);
+
+  useEffect(() => {
+    setFirstName(userInfo?.firstName || "");
+    setLastName(userInfo?.lastName || "");
+    setMiddleName(userInfo?.middleName || "");
+    setBirthDate(userInfo?.birthDate || "");
+    setPassDate(userInfo?.passDate || "");
+  }, [userInfo]);
+
+  const handleBirthChange = (e) => {
+    const newDate = e.target.value;
+    setBirthDate(DateValidate(newDate, birthDate));
+  };
+
+  const handlePassChange = (e) => {
+    const newDate = e.target.value;
+    setPassDate(DateValidate(newDate, passDate));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Данные пользователя для обновления
+    const userData = {
+      id: userInfo.id,
+      firstName,
+      lastName,
+      middleName,
+      birthDate,
+      passDate,
+    };
+
+    try {
+      // Отправляем запрос на сервер для обновления данных пользователя
+      const response = await axios.patch(
+        "http://localhost:5000/users/update-info", // Убедитесь, что путь верный
+        userData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Добавляем JWT токен из localStorage
+            "Content-Type": "application/json", // Убедитесь, что тип контента правильный
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Данные успешно обновлены:", response.data);
+
+        // Сохраняем обновленные данные пользователя в localStorage
+        localStorage.setItem("userData", JSON.stringify(response.data));
+        history('/profile');
+      }
+    } catch (error) {
+      console.error("Ошибка при обновлении данных:", error);
+      // Обработка ошибки, например, показать пользователю сообщение
+    }
+  };
+
   return (
     <section className={styles.editSection}>
       <Header></Header>
       <div className={styles.editWrapper}>
         <div className={styles.editContainer}>
           <h1 className={styles.editTitle}>Редагування пам’ятного запису</h1>
-          <form>
+          <form onSubmit={handleSubmit}>
             <label className={styles.editLabel} htmlFor="name">
               Iм'я
             </label>
@@ -18,7 +91,9 @@ const Edit = () => {
               type="text"
               name="name"
               placeholder="Назар"
-              defaultValue="Назар"
+              defaultValue={userInfo?.firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
             />
             <label className={styles.editLabel} htmlFor="lastname">
               Прiзвище
@@ -28,7 +103,9 @@ const Edit = () => {
               type="text"
               name="lastname"
               placeholder="Павлюк"
-              defaultValue="Павлюк"
+              defaultValue={userInfo?.lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
             />
             <label className={styles.editLabel} htmlFor="patronymic">
               По-батькові
@@ -38,7 +115,9 @@ const Edit = () => {
               type="text"
               name="patronymic"
               placeholder="Євгенійович"
-              defaultValue="Євгенійович"
+              defaultValue={userInfo?.middleName}
+              onChange={(e) => setMiddleName(e.target.value)}
+              required
             />
             <div className={styles.editHorizontalWrapper}>
               <div className={styles.editVerticalWrapper}>
@@ -50,7 +129,10 @@ const Edit = () => {
                   type="text"
                   name="born"
                   placeholder="дд.мм.рррр"
-                  defaultValue="19.08.1960"
+                  value={birthDate}
+                  defaultValue={userInfo?.birthDate}
+                  onChange={handleBirthChange}
+                  required
                 />
               </div>
               <div className={styles.editVerticalWrapper}>
@@ -62,7 +144,10 @@ const Edit = () => {
                   type="text"
                   name="passed"
                   placeholder="дд.мм.рррр"
-                  defaultValue="27.03.2020"
+                  defaultValue={userInfo?.passDate}
+                  value={passDate}
+                  onChange={handlePassChange}
+                  required
                 />
               </div>
             </div>
