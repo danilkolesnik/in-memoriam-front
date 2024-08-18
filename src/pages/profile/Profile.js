@@ -5,26 +5,82 @@ import Header from "components/layouts/header/Header";
 import Sidebar from "components/layouts/sidebar/Sidebar";
 import avatar from "../../assets/icons/avatar-sample.svg";
 import add from "../../assets/icons/add.svg";
+import Bio from "components/forms/bio/Bio";
+import Media from "components/forms/media/Media";
+import { API } from "utils/constants";
 
 const Profile = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("info");
+  const [activeTab, setActiveTab] = useState("bio");
 
   const [userInfo, setUserInfo] = useState([]);
 
-  const [file, setFile] = useState(null);
-  const [fileURL, setFileURL] = useState("");
+  const [avatarURL, setAvatarURL] = useState("");
+  const [bannerURL, setBannerURL] = useState("");
 
-  const handleFileChange = (event) => {
+  const handleAvatarChange = async (event) => {
     const selectedFile = event.target.files[0];
 
     if (selectedFile) {
-      setFile(selectedFile);
 
       // Создаем URL для файла и сохраняем его
       const url = URL.createObjectURL(selectedFile);
-      setFileURL(url);
+      setAvatarURL(url);
+
+      const formData = new FormData();
+      formData.append("avatar", selectedFile);
+
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/users/upload-avatar",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          console.log("Аватар успешно загружен", response.data.avatar);
+        }
+      } catch (error) {
+        console.error("Ошибка при загрузке аватара:", error);
+      }
+    }
+  };
+
+  const handleBannerChange = async (event) => {
+    const selectedFile = event.target.files[0];
+
+    if (selectedFile) {
+      // Создаем URL для файла и сохраняем его
+      const url = URL.createObjectURL(selectedFile);
+      setBannerURL(url);
+
+      const formData = new FormData();
+      formData.append("banner", selectedFile);
+
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/users/upload-banner",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          console.log("Баннер успешно загружен", response.data.avatar);
+        }
+      } catch (error) {
+        console.error("Ошибка при загрузке баннера:", error);
+      }
     }
   };
 
@@ -47,8 +103,13 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    fetchUserData()
+    fetchUserData();
   }, []);
+
+  useEffect(() => {
+    setAvatarURL(API + userInfo.avatar);
+    setBannerURL(API + userInfo.banner);
+  }, [userInfo]);
 
   return (
     <section className={styles.profileSection}>
@@ -59,22 +120,34 @@ const Profile = () => {
       />
       <div className={styles.profileWrapper}>
         <div className={styles.profileContainer}>
-          <div className={styles.profileBanner}></div>
+          <div className={styles.profileBanner}>
+            {bannerURL && (
+              <img className={styles.bannerImage} src={bannerURL} alt="" />
+            )}
+          </div>
           <div className={styles.imageSettingsContainer}>
             <div className={styles.avatarContainer}>
               <input
                 type="file"
                 name="avatar"
                 className={styles.fileInput}
-                onChange={handleFileChange}
+                onChange={handleAvatarChange}
               />
-              {fileURL ? (
-                <img className={styles.avatarImage} src={fileURL} alt="" />
+              {avatarURL ? (
+                <img className={styles.avatarImage} src={avatarURL} alt="" />
               ) : (
                 <img className={styles.avatarImage} src={avatar} alt="" />
               )}
             </div>
-            <img className={styles.addImage} src={add} alt="" />
+            <div className={styles.bannerInputContainer}>
+              <input
+                type="file"
+                name="banner"
+                className={styles.fileInput}
+                onChange={handleBannerChange}
+              />
+              <img className={styles.addImage} src={add} alt="" />
+            </div>
             <a className={styles.editButton} href="/edit">
               Змiнити
             </a>
@@ -107,11 +180,11 @@ const Profile = () => {
             <header className={styles.infoHeader}>
               <div
                 className={
-                  activeTab === "info"
+                  activeTab === "bio"
                     ? styles.toggleElementActive
                     : styles.toggleElement
                 }
-                onClick={() => setActiveTab("info")}
+                onClick={() => setActiveTab("bio")}
               >
                 Про мене
               </div>
@@ -126,35 +199,8 @@ const Profile = () => {
                 Медiа
               </div>
             </header>
-            {activeTab === "info" && (
-              <div className={styles.textInfoWrapper}>
-                <textarea
-                  className={styles.textAreaQuote}
-                  defaultValue={userInfo?.quote}
-                  maxLength="150"
-                  placeholder="«Його творчість і щедрість духу надихали всіх, хто його знав»"
-                />
-                <textarea
-                  className={styles.textAreaInfo}
-                  maxLength="150"
-                  defaultValue={userInfo?.bio}
-                  placeholder="Назар був відомий своєю добротою і почуттям гумору. Він завжди був готовий підтримати і допомогти близьким у важкі часи. Його друзі згадують, як він організовував затишні вечори у своєму домі, де всі почувалися як удома."
-                />
-              </div>
-            )}
-            {activeTab === "media" && (
-              <div className={styles.mediaCardWrapper}>
-                <div className={styles.photoCard}></div>
-                <div className={styles.photoCard}></div>
-                <div className={styles.photoCard}></div>
-                <div className={styles.photoCard}></div>
-                <div className={styles.photoCard}></div>
-                <div className={styles.photoCard}></div>
-                <div className={styles.photoCard}></div>
-                <div className={styles.photoCard}></div>
-                <div className={styles.photoCard}></div>
-              </div>
-            )}
+            {activeTab === "bio" && <Bio userInfo={userInfo} />}
+            {activeTab === "media" && <Media userInfo={userInfo} />}
           </article>
         </div>
       </div>

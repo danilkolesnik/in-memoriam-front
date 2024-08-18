@@ -1,0 +1,51 @@
+
+.feedSection {
+  font-family: CenturyGothic;
+  max-width: 800px;
+  background-color: rgb(255, 255, 255);
+  min-height: 100vh;
+  margin: auto;
+  filter: drop-shadow(0px 0px 20px rgba(53, 54, 78, 0.15));
+}
+
+.feedWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.feedContainer {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.mediaItem {
+  width: 100%;
+  position: relative;
+}
+
+.video {
+  width: 100%;
+}
+
+.image {
+  width: 100%;
+}
+
+.videoIcon {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  width: 10%;
+}
+
+.volume {
+  position: absolute;
+  max-width: 8%;
+  bottom: 5%;
+  right: 5%;
+}

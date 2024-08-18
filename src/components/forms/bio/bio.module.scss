@@ -1,0 +1,51 @@
+
+.textInfoWrapper {
+  margin: 5%;
+}
+
+.textAreaQuote {
+  font-family: CenturyGothic;
+  font-size: 1.1em;
+  resize: none;
+  width: 100%;
+  padding: 5%;
+  min-height: 90px;
+  border-radius: 12px;
+  border: 1px solid #D1D1D6;
+}
+
+.textAreaQuote:focus {
+  outline: none;
+  box-shadow:none !important;
+  border: 2px solid #D1D1D6;
+}
+
+.textAreaInfo {
+  font-family: CenturyGothic;
+  font-size: 1.1em;
+  resize: none;
+  padding: 5%;
+  width: 100%;
+  min-height: 230px;
+  border-radius: 12px;
+  border: 1px solid #D1D1D6;
+}
+
+.textAreaInfo:focus {
+  outline: none;
+  box-shadow:none !important;
+  border: 2px solid #D1D1D6;
+}
+
+.saveButton {
+  font-family: CenturyGothic;
+  width: 100%;
+  height: 44px;
+  border-radius: 50px;
+  background-color: black;
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: #FFF;
+  cursor: pointer;
+}

@@ -40,7 +40,6 @@ const Edit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Данные пользователя для обновления
     const userData = {
       id: userInfo.id,
       firstName,
@@ -51,14 +50,14 @@ const Edit = () => {
     };
 
     try {
-      // Отправляем запрос на сервер для обновления данных пользователя
+      
       const response = await axios.patch(
-        "http://localhost:5000/users/update-info", // Убедитесь, что путь верный
+        "http://localhost:5000/users/update-info", 
         userData,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Добавляем JWT токен из localStorage
-            "Content-Type": "application/json", // Убедитесь, что тип контента правильный
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
           },
         }
       );
@@ -66,13 +65,11 @@ const Edit = () => {
       if (response.status === 200) {
         console.log("Данные успешно обновлены:", response.data);
 
-        // Сохраняем обновленные данные пользователя в localStorage
         localStorage.setItem("userData", JSON.stringify(response.data));
         history('/profile');
       }
     } catch (error) {
       console.error("Ошибка при обновлении данных:", error);
-      // Обработка ошибки, например, показать пользователю сообщение
     }
   };
 

@@ -26,6 +26,18 @@
   min-height: 150px;
   height: 20vh;
   background-color: #F2F2F7;
+  position: relative;
+  overflow: hidden;
+}
+
+.bannerImage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 25vh;
+  width: 100%;
+  object-fit: cover;
 }
 
 .imageSettingsContainer {
@@ -47,6 +59,9 @@
   position: relative;
 }
 
+.bannerInputContainer {
+  position: relative;
+}
 
 .fileInput {
   width: 40.29px;
@@ -123,66 +138,14 @@
   border-bottom: 1px solid #000;  
 }
 
-.textInfoWrapper {
-  margin: 5%;
-}
-
-.textAreaQuote {
-  font-family: CenturyGothic;
-  font-size: 1.1em;
-  resize: none;
-  width: 100%;
-  padding: 5%;
-  min-height: 90px;
-  border-radius: 12px;
-  border: 1px solid #D1D1D6;
-}
-
-.textAreaInfo {
-  font-family: CenturyGothic;
-  font-size: 1.1em;
-  resize: none;
-  padding: 5%;
-  width: 100%;
-  min-height: 230px;
-  border-radius: 12px;
-  border: 1px solid #D1D1D6;
-}
-
-.textAreaQuote:focus {
-  outline: none;
-  box-shadow:none !important;
-  border: 2px solid #D1D1D6;
-}
-
-.textAreaInfo:focus {
-  outline: none;
-  box-shadow:none !important;
-  border: 2px solid #D1D1D6;
-}
-
-.mediaCardWrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1%;
-  margin-top: 3%;
-  padding-bottom: 5vh;
-}
-
-.photoCard {
-  background-color: #F2F2F7;
-  width: 32%;
-  padding-bottom: 32%;
-  margin-bottom: 1%;
-}
-
-
 @media screen and (min-width: 550px) {
   .profileBanner {
     height: 35vh;
   }
 
+  .bannerImage {
+    height: 35vh;
+  }
   .imageSettingsContainer {
     top: 25vh;
   }
