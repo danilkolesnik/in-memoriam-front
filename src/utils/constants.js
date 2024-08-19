@@ -1,4 +1,5 @@
-export const API = 'http://localhost:5000';
+// export const API = 'http://localhost:5000';
+export const API = "http://89.43.33.70:3111";
 export const AUTH_ROUTE = '/';
 export const LOG_IN_ROUTE = '/log-in';
 export const SETUP_ROUTE = '/setup';
