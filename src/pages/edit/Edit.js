@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./edit.module.scss";
 import Header from "../../components/layouts/header/Header";
 import axios from "axios";
-import { DateValidate } from 'services/DateValidate';
+import { DateValidate } from "services/DateValidate";
 
 const Edit = () => {
   const history = useNavigate();
@@ -50,9 +50,8 @@ const Edit = () => {
     };
 
     try {
-      
       const response = await axios.patch(
-        "http://localhost:5000/users/update-info", 
+        "http://localhost:5000/users/update-info",
         userData,
         {
           headers: {
@@ -66,7 +65,7 @@ const Edit = () => {
         console.log("Данные успешно обновлены:", response.data);
 
         localStorage.setItem("userData", JSON.stringify(response.data));
-        history('/profile');
+        history("/profile");
       }
     } catch (error) {
       console.error("Ошибка при обновлении данных:", error);
@@ -157,6 +156,6 @@ const Edit = () => {
       </div>
     </section>
   );
-}
+};
 
 export default Edit;

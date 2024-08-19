@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './bio.module.scss';
 import axios from "axios";
 
-const Bio = ({ userInfo }) => {
+const Bio = ({ userInfo, myUserId }) => {
   
   const [quote, setQuote] = useState("");
   const [bio, setBio] = useState("");
@@ -49,6 +49,7 @@ const Bio = ({ userInfo }) => {
         className={styles.textAreaQuote}
         defaultValue={userInfo?.quote}
         onChange={(e) => setQuote(e.target.value)}
+        readOnly={myUserId !== userInfo?.id}
         maxLength="150"
         placeholder="«Його творчість і щедрість духу надихали всіх, хто його знав»"
       />
@@ -57,6 +58,7 @@ const Bio = ({ userInfo }) => {
         maxLength="150"
         defaultValue={userInfo?.bio}
         onChange={(e) => setBio(e.target.value)}
+        readOnly={myUserId !== userInfo?.id}
         placeholder="Назар був відомий своєю добротою і почуттям гумору. Він завжди був готовий підтримати і допомогти близьким у важкі часи. Його друзі згадують, як він організовував затишні вечори у своєму домі, де всі почувалися як удома."
       />
       {(quote !== userInfo?.quote || bio !== userInfo?.bio) && (

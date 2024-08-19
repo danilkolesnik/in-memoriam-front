@@ -1,30 +1,58 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import styles from "./profile.module.scss";
 import axios from "axios";
-import Header from "components/layouts/header/Header";
-import Sidebar from "components/layouts/sidebar/Sidebar";
+import Header from "../../components/layouts/header/Header";
+import Sidebar from "../../components/layouts/sidebar/Sidebar";
 import avatar from "../../assets/icons/avatar-sample.svg";
 import add from "../../assets/icons/add.svg";
-import Bio from "components/forms/bio/Bio";
-import Media from "components/forms/media/Media";
+import Bio from "../../components/forms/bio/Bio";
+import Media from "../../components/forms/media/Media";
 import { API } from "utils/constants";
 
 const Profile = () => {
+  const { id } = useParams(); // Извлекаем параметр ID из URL
+  const myUserId = JSON.parse(localStorage.getItem("myUserId"));
 
+  const navigate = useNavigate(); // Для перенаправления на страницу NotFound
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("bio");
 
   const [userInfo, setUserInfo] = useState([]);
-
   const [avatarURL, setAvatarURL] = useState("");
   const [bannerURL, setBannerURL] = useState("");
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/users/users/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`, // Добавляем токен из localStorage
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          console.log("Информация о пользователе:", response.data);
+          localStorage.setItem("userData", JSON.stringify(response.data));
+          setUserInfo(response.data);
+          setAvatarURL(API + response.data.avatar);
+          setBannerURL(API + response.data.banner);
+        }
+      } catch (error) {
+        console.error("Ошибка при получении данных пользователя:", error);
+        navigate("/not-found"); // Перенаправляем на страницу NotFound, если пользователь не найден
+      }
+    };
+
+    fetchUserData();
+  }, [id, navigate]);
+
   const handleAvatarChange = async (event) => {
     const selectedFile = event.target.files[0];
-
     if (selectedFile) {
-
-      // Создаем URL для файла и сохраняем его
       const url = URL.createObjectURL(selectedFile);
       setAvatarURL(url);
 
@@ -54,9 +82,7 @@ const Profile = () => {
 
   const handleBannerChange = async (event) => {
     const selectedFile = event.target.files[0];
-
     if (selectedFile) {
-      // Создаем URL для файла и сохраняем его
       const url = URL.createObjectURL(selectedFile);
       setBannerURL(url);
 
@@ -76,7 +102,7 @@ const Profile = () => {
         );
 
         if (response.status === 200) {
-          console.log("Баннер успешно загружен", response.data.avatar);
+          console.log("Баннер успешно загружен", response.data.banner);
         }
       } catch (error) {
         console.error("Ошибка при загрузке баннера:", error);
@@ -84,73 +110,55 @@ const Profile = () => {
     }
   };
 
-  const fetchUserData = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/users/get-info", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Добавляем токен из localStorage
-        },
-      });
-
-      if (response.status === 200) {
-        console.log("Информация о пользователе:", response.data);
-        localStorage.setItem("userData", JSON.stringify(response.data));
-        setUserInfo(response.data);
-      }
-    } catch (error) {
-      console.error("Ошибка при получении данных пользователя:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  useEffect(() => {
-    setAvatarURL(API + userInfo.avatar);
-    setBannerURL(API + userInfo.banner);
-  }, [userInfo]);
-
   return (
     <section className={styles.profileSection}>
       <Header
         profile
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
+        showSettings={myUserId === id}
+        myUserId={myUserId}
       />
       <div className={styles.profileWrapper}>
         <div className={styles.profileContainer}>
           <div className={styles.profileBanner}>
-            {bannerURL && (
+            {userInfo?.banner && (
               <img className={styles.bannerImage} src={bannerURL} alt="" />
             )}
           </div>
           <div className={styles.imageSettingsContainer}>
             <div className={styles.avatarContainer}>
-              <input
-                type="file"
-                name="avatar"
-                className={styles.fileInput}
-                onChange={handleAvatarChange}
-              />
-              {avatarURL ? (
+              {myUserId === id && (
+                <input
+                  type="file"
+                  name="avatar"
+                  className={styles.fileInput}
+                  onChange={handleAvatarChange}
+                />
+              )}
+
+              {userInfo?.avatar ? (
                 <img className={styles.avatarImage} src={avatarURL} alt="" />
               ) : (
                 <img className={styles.avatarImage} src={avatar} alt="" />
               )}
             </div>
-            <div className={styles.bannerInputContainer}>
-              <input
-                type="file"
-                name="banner"
-                className={styles.fileInput}
-                onChange={handleBannerChange}
-              />
-              <img className={styles.addImage} src={add} alt="" />
-            </div>
-            <a className={styles.editButton} href="/edit">
-              Змiнити
-            </a>
+            {myUserId === id && (
+              <div className={styles.bannerInputContainer}>
+                <input
+                  type="file"
+                  name="banner"
+                  className={styles.fileInput}
+                  onChange={handleBannerChange}
+                />
+                <img className={styles.addImage} src={add} alt="" />
+              </div>
+            )}
+            {myUserId === id && (
+              <a className={styles.editButton} href="/edit">
+                Змiнити
+              </a>
+            )}
           </div>
           <div className={styles.mainInfoContainer}>
             <h3>
@@ -168,9 +176,9 @@ const Profile = () => {
                 <path
                   d="M4.7 0.75L4.7 11.25M1.25 3.9L8.45 3.9"
                   stroke="black"
-                  stroke-width="0.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="0.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               <span>{userInfo?.passDate}</span>
@@ -199,8 +207,12 @@ const Profile = () => {
                 Медiа
               </div>
             </header>
-            {activeTab === "bio" && <Bio userInfo={userInfo} />}
-            {activeTab === "media" && <Media userInfo={userInfo} />}
+            {activeTab === "bio" && (
+              <Bio userInfo={userInfo} myUserId={myUserId} />
+            )}
+            {activeTab === "media" && (
+              <Media userInfo={userInfo} myUserId={myUserId} />
+            )}
           </article>
         </div>
       </div>

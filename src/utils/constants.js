@@ -4,4 +4,4 @@ export const SETUP_ROUTE = '/setup';
 export const EDIT_ROUTE = '/edit';
 export const PROFILE_ROUTE = '/profile';
 export const FEED_ROUTE = '/feed';
-export const NOT_FOUND = '/profile-not-found';
+export const NOT_FOUND = '/not-found';

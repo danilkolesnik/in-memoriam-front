@@ -1,7 +1,7 @@
-import React from 'react';
-import Header from 'components/layouts/header/Header';
-import styles from './notfound.module.scss';
-import notFound from '../../assets/icons/notfound.svg';
+import React from "react";
+import Header from "components/layouts/header/Header";
+import styles from "./notfound.module.scss";
+import notFound from "../../assets/icons/notfound.svg";
 
 const NotFound = () => {
   return (
@@ -17,6 +17,6 @@ const NotFound = () => {
       </div>
     </section>
   );
-}
+};
 
 export default NotFound;

@@ -1,12 +1,12 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
-import Header from 'components/layouts/header/Header';
-import styles from './feed.module.scss';
-import { API } from 'utils/constants';
+import Header from "components/layouts/header/Header";
+import styles from "./feed.module.scss";
+import { API } from "utils/constants";
 import camera from "../../assets/icons/camera.svg";
+import trash from "../../assets/icons/trash.svg";
 
 const Feed = () => {
-
   const [userInfo, setUserInfo] = useState([]);
 
   const [currentPlaying, setCurrentPlaying] = useState(null);
@@ -66,6 +66,26 @@ const Feed = () => {
     }
   };
 
+  const handleDeleteMedia = async (mediaId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/users/delete-media/${userInfo.id}/${mediaId}`
+      );
+
+      if (response.status === 200) {
+        console.log("Медиафайл успешно удален");
+        // Обновите состояние или UI, удалив медиафайл
+
+        setUserInfo((prevState) => ({
+          ...prevState,
+          media: prevState.media.filter((media) => media.id !== mediaId),
+        }));
+      }
+    } catch (error) {
+      console.error("Ошибка при удалении медиафайла:", error);
+    }
+  };
+
   return (
     <section className={styles.feedSection}>
       <Header feed />
@@ -86,13 +106,27 @@ const Feed = () => {
                     style={{ cursor: "pointer" }}
                   />
                   <img className={styles.videoIcon} src={camera} alt="" />
+                  <img
+                    className={styles.trashIcon}
+                    src={trash}
+                    alt=""
+                    onClick={() => handleDeleteMedia(media.id)}
+                  />
                 </>
               ) : (
-                <img
-                  className={styles.image}
-                  src={API + media.url}
-                  alt="Media"
-                />
+                <>
+                  <img
+                    className={styles.image}
+                    src={API + media.url}
+                    alt="Media"
+                  />
+                  <img
+                    className={styles.trashIcon}
+                    src={trash}
+                    alt=""
+                    onClick={() => handleDeleteMedia(media.id)}
+                  />
+                </>
               )}
             </div>
           ))}
@@ -100,6 +134,6 @@ const Feed = () => {
       </div>
     </section>
   );
-}
+};
 
-export default Feed
+export default Feed;

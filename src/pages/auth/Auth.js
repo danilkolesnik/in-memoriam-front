@@ -33,6 +33,7 @@ const Auth = () => {
       });
       setError("");
       localStorage.setItem("userData", JSON.stringify(response.data.user));
+      localStorage.setItem("myUserId", JSON.stringify(response.data.user.id));
       localStorage.setItem("token", response.data.token);
       if (
         !response.data.user.firstName ||
@@ -41,7 +42,7 @@ const Auth = () => {
       ) {
         history("/setup");
       } else {
-        history("/profile");
+        history(`/profile/${response.data.user.id}`);
       }
     } catch (error) {
       setError("Неверный логин или пароль.");
