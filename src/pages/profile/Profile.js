@@ -8,47 +8,61 @@ import avatar from "../../assets/icons/avatar-sample.svg";
 import add from "../../assets/icons/add.svg";
 import Bio from "../../components/forms/bio/Bio";
 import Media from "../../components/forms/media/Media";
-import { API } from "utils/constants";
+import { API, LOG_IN_ROUTE, NOT_FOUND_ROUTE } from "utils/constants";
 
 const Profile = () => {
-  const { id } = useParams(); // Извлекаем параметр ID из URL
+  const { id } = useParams();
   const myUserId = JSON.parse(localStorage.getItem("myUserId"));
-
-  const navigate = useNavigate(); // Для перенаправления на страницу NotFound
+  const token = localStorage.getItem("token");
+  
+  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("bio");
 
   const [userInfo, setUserInfo] = useState([]);
-  const [avatarURL, setAvatarURL] = useState("");
-  const [bannerURL, setBannerURL] = useState("");
+  const [avatarURL, setAvatarURL] = useState(null);
+  const [bannerURL, setBannerURL] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/users/users/${id}`,
+          `${API}/users/users/${id}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`, // Добавляем токен из localStorage
+              Authorization: `Bearer ${token}`,
             },
           }
         );
 
         if (response.status === 200) {
-          console.log("Информация о пользователе:", response.data);
+
+          if (response.data.isPrivate && !token) {
+            sessionStorage.setItem("requestedProfileID", id);
+            navigate(LOG_IN_ROUTE);
+            return;
+          }
           localStorage.setItem("userData", JSON.stringify(response.data));
           setUserInfo(response.data);
-          setAvatarURL(API + response.data.avatar);
-          setBannerURL(API + response.data.banner);
+
+          if (typeof response.data.avatar === "string") {
+            setAvatarURL(API + "/" + response.data.avatar);
+          }
+          
+          if (typeof response.data.banner === "string") {
+            setBannerURL(API + "/" + response.data.banner);
+          }
+
+
         }
       } catch (error) {
         console.error("Ошибка при получении данных пользователя:", error);
-        navigate("/not-found"); // Перенаправляем на страницу NotFound, если пользователь не найден
+        navigate(NOT_FOUND_ROUTE); 
       }
     };
 
     fetchUserData();
-  }, [id, navigate]);
+  }, [id, navigate, token]);
 
   const handleAvatarChange = async (event) => {
     const selectedFile = event.target.files[0];
@@ -61,7 +75,7 @@ const Profile = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:5000/users/upload-avatar",
+          `${API}/users/upload-avatar`,
           formData,
           {
             headers: {
@@ -91,7 +105,7 @@ const Profile = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:5000/users/upload-banner",
+          `${API}/users/upload-banner`,
           formData,
           {
             headers: {
@@ -122,7 +136,7 @@ const Profile = () => {
       <div className={styles.profileWrapper}>
         <div className={styles.profileContainer}>
           <div className={styles.profileBanner}>
-            {userInfo?.banner && (
+            {bannerURL && (
               <img className={styles.bannerImage} src={bannerURL} alt="" />
             )}
           </div>
@@ -137,7 +151,7 @@ const Profile = () => {
                 />
               )}
 
-              {userInfo?.avatar ? (
+              {avatarURL ? (
                 <img className={styles.avatarImage} src={avatarURL} alt="" />
               ) : (
                 <img className={styles.avatarImage} src={avatar} alt="" />
@@ -211,13 +225,14 @@ const Profile = () => {
               <Bio userInfo={userInfo} myUserId={myUserId} />
             )}
             {activeTab === "media" && (
-              <Media userInfo={userInfo} myUserId={myUserId} />
+              <Media userInfo={userInfo} myUserId={myUserId} idParam={id} />
             )}
           </article>
         </div>
       </div>
       {isSidebarOpen && (
         <Sidebar
+          userInfo={userInfo}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />

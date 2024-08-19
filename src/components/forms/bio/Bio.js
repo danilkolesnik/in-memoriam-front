@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './bio.module.scss';
 import axios from "axios";
+import { API } from 'utils/constants';
 
 const Bio = ({ userInfo, myUserId }) => {
   
@@ -24,7 +25,7 @@ const Bio = ({ userInfo, myUserId }) => {
     try {
         
         const response = await axios.patch(
-          "http://localhost:5000/users/update-info", 
+          `${API}/users/update-info`,
           userData,
           {
             headers: {
@@ -45,22 +46,32 @@ const Bio = ({ userInfo, myUserId }) => {
 
   return (
     <form className={styles.textInfoWrapper} onSubmit={handleSubmit}>
-      <textarea
-        className={styles.textAreaQuote}
-        defaultValue={userInfo?.quote}
-        onChange={(e) => setQuote(e.target.value)}
-        readOnly={myUserId !== userInfo?.id}
-        maxLength="150"
-        placeholder="«Його творчість і щедрість духу надихали всіх, хто його знав»"
-      />
-      <textarea
-        className={styles.textAreaInfo}
-        maxLength="150"
-        defaultValue={userInfo?.bio}
-        onChange={(e) => setBio(e.target.value)}
-        readOnly={myUserId !== userInfo?.id}
-        placeholder="Назар був відомий своєю добротою і почуттям гумору. Він завжди був готовий підтримати і допомогти близьким у важкі часи. Його друзі згадують, як він організовував затишні вечори у своєму домі, де всі почувалися як удома."
-      />
+      {myUserId === userInfo?.id ? (
+        <>
+          <textarea
+            className={styles.textAreaQuote}
+            defaultValue={userInfo?.quote}
+            onChange={(e) => setQuote(e.target.value)}
+            readOnly={myUserId !== userInfo?.id}
+            maxLength="150"
+            placeholder="«Його творчість і щедрість духу надихали всіх, хто його знав»"
+          />
+          <textarea
+            className={styles.textAreaInfo}
+            maxLength="150"
+            defaultValue={userInfo?.bio}
+            onChange={(e) => setBio(e.target.value)}
+            readOnly={myUserId !== userInfo?.id}
+            placeholder="Назар був відомий своєю добротою і почуттям гумору. Він завжди був готовий підтримати і допомогти близьким у важкі часи. Його друзі згадують, як він організовував затишні вечори у своєму домі, де всі почувалися як удома."
+          />
+        </>
+      ) : (
+        <div className={styles.uneditableInfoWrapper}>
+          <h4>«{userInfo?.quote}»</h4>
+          <p>{userInfo?.bio}</p>
+        </div>
+      )}
+
       {(quote !== userInfo?.quote || bio !== userInfo?.bio) && (
         <button className={styles.saveButton} type="submit">
           Зберегти

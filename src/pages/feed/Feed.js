@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "components/layouts/header/Header";
 import styles from "./feed.module.scss";
@@ -7,6 +8,8 @@ import camera from "../../assets/icons/camera.svg";
 import trash from "../../assets/icons/trash.svg";
 
 const Feed = () => {
+  const { id } = useParams();
+  const myUserId = JSON.parse(localStorage.getItem("myUserId"));
   const [userInfo, setUserInfo] = useState([]);
 
   const [currentPlaying, setCurrentPlaying] = useState(null);
@@ -15,11 +18,14 @@ const Feed = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/users/get-info", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Добавляем токен из localStorage
-        },
-      });
+      const response = await axios.get(
+        `${API}/users/users/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (response.status === 200) {
         console.log("Информация о пользователе:", response.data);
@@ -36,7 +42,7 @@ const Feed = () => {
   }, []);
 
   useEffect(() => {
-    // Пройти по каждому видео и создать превью
+    
     userInfo?.media?.forEach((media, index) => {
       if (media.type === "video") {
         const video = videoRefs.current[index];
@@ -69,12 +75,11 @@ const Feed = () => {
   const handleDeleteMedia = async (mediaId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/users/delete-media/${userInfo.id}/${mediaId}`
+        `${API}/users/delete-media/${userInfo.id}/${mediaId}`
       );
 
       if (response.status === 200) {
         console.log("Медиафайл успешно удален");
-        // Обновите состояние или UI, удалив медиафайл
 
         setUserInfo((prevState) => ({
           ...prevState,
@@ -98,7 +103,7 @@ const Feed = () => {
                   <video
                     ref={(el) => (videoRefs.current[index] = el)}
                     className={styles.video}
-                    src={API + media.url}
+                    src={API + "/" + media.url}
                     onClick={() => handlePlayPause(index)}
                     muted={currentPlaying !== index}
                     loop
@@ -106,18 +111,20 @@ const Feed = () => {
                     style={{ cursor: "pointer" }}
                   />
                   <img className={styles.videoIcon} src={camera} alt="" />
-                  <img
-                    className={styles.trashIcon}
-                    src={trash}
-                    alt=""
-                    onClick={() => handleDeleteMedia(media.id)}
-                  />
+                  {myUserId === id && (
+                    <img
+                      className={styles.trashIcon}
+                      src={trash}
+                      alt=""
+                      onClick={() => handleDeleteMedia(media.id)}
+                    />
+                  )}
                 </>
               ) : (
                 <>
                   <img
                     className={styles.image}
-                    src={API + media.url}
+                    src={API + "/" + media.url}
                     alt="Media"
                   />
                   <img

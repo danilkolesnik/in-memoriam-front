@@ -1,21 +1,17 @@
-// formatDateInput.js
+
 export function DateValidate(value, previousValue) {
-  // Удаляем все символы, кроме цифр и точек
   value = value.replace(/[^0-9.]/g, "");
 
-  // Если удалили точку и меняем длину строки, автоматически переформатируем
   if (value.length === 2 || value.length === 5) {
     if (previousValue.length < value.length) {
       value += ".";
     }
   }
 
-  // Ограничиваем длину до 10 символов (ДД.ММ.ГГГГ)
   if (value.length > 10) {
     value = value.slice(0, 10);
   }
 
-  // Проверка валидности введенной даты
   const parts = value.split(".");
   if (parts.length > 0) {
     const day = parseInt(parts[0], 10);
@@ -32,6 +28,5 @@ export function DateValidate(value, previousValue) {
     else if (year < 1000) parts[2] = "1000";
   }
 
-  // Собираем дату обратно
   return parts.join(".");
 }

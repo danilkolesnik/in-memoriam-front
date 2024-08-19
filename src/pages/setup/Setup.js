@@ -4,6 +4,7 @@ import axios from "axios";
 import styles from "./setup.module.scss";
 import Header from "../../components/layouts/header/Header";
 import { DateValidate } from "services/DateValidate";
+import { API, PROFILE_ROUTE } from "utils/constants";
 
 const Setup = () => {
   const history = useNavigate();
@@ -17,7 +18,6 @@ const Setup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Данные пользователя для обновления
     const userData = {
       firstName,
       lastName,
@@ -27,13 +27,13 @@ const Setup = () => {
     };
 
     try {
-      // Отправляем запрос на сервер для обновления данных пользователя
+      
       const response = await axios.put(
-        "http://localhost:5000/users/setup-info", // Убедитесь, что путь верный
+        `${API}/users/setup-info`,
         userData,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Добавляем JWT токен из localStorage
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -41,12 +41,10 @@ const Setup = () => {
       if (response.status === 200) {
         console.log("Данные успешно обновлены");
         localStorage.setItem("userData", JSON.stringify(response.data.user));
-        history("/profile");
-        // Перенаправляем пользователя на следующую страницу или показываем уведомление
+        history(`${PROFILE_ROUTE}/${response.data.user.id}`);
       }
     } catch (error) {
       console.error("Ошибка при обновлении данных:", error);
-      // Обработка ошибки, например, показать пользователю сообщение
     }
   };
 

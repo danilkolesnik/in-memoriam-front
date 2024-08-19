@@ -49,3 +49,10 @@
   color: #FFF;
   cursor: pointer;
 }
+
+.uneditableInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}

@@ -4,10 +4,12 @@ import styles from "./edit.module.scss";
 import Header from "../../components/layouts/header/Header";
 import axios from "axios";
 import { DateValidate } from "services/DateValidate";
+import { API, PROFILE_ROUTE } from "utils/constants";
 
 const Edit = () => {
   const history = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
+  const myUserId = JSON.parse(localStorage.getItem("myUserId"));
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -51,7 +53,7 @@ const Edit = () => {
 
     try {
       const response = await axios.patch(
-        "http://localhost:5000/users/update-info",
+        `${API}/users/update-info`,
         userData,
         {
           headers: {
@@ -65,7 +67,7 @@ const Edit = () => {
         console.log("Данные успешно обновлены:", response.data);
 
         localStorage.setItem("userData", JSON.stringify(response.data));
-        history("/profile");
+        history(`${PROFILE_ROUTE}/${myUserId}`);
       }
     } catch (error) {
       console.error("Ошибка при обновлении данных:", error);

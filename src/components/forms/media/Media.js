@@ -4,26 +4,26 @@ import axios from "axios";
 import styles from './media.module.scss';
 import upload from '../../../assets/icons/media-upload.svg';
 import camera from '../../../assets/icons/camera.svg';
-import { API } from 'utils/constants';
+import { API, FEED_ROUTE } from "utils/constants";
 
-const Media = ({ userInfo, myUserId }) => {
+const Media = ({ userInfo, myUserId, idParam }) => {
   const history = useNavigate();
   const [mediaURL, setMediaURL] = useState([]);
 
   const handleAddMedia = async (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
-      // Создаем URL для файла и сохраняем его
+      
       const url = URL.createObjectURL(selectedFile);
-      setMediaURL([...mediaURL, url]);
+      setMediaURL((prevMediaURL) => [...prevMediaURL, url]);
 
       const formData = new FormData();
       formData.append("media", selectedFile);
-      formData.append("id", userInfo?.id); // ID пользователя
+      formData.append("id", userInfo?.id);
 
       try {
         const response = await axios.post(
-          "http://localhost:5000/users/upload-media",
+          `${API}/users/upload-media`,
           formData,
           {
             headers: {
@@ -35,7 +35,7 @@ const Media = ({ userInfo, myUserId }) => {
 
         if (response.status === 200) {
           console.log("Медиафайл успешно загружен:", response.data);
-          // Добавьте новый медиафайл в состояние или UI
+        
         }
       } catch (error) {
         console.error("Ошибка при загрузке медиафайла:", error);
@@ -44,8 +44,15 @@ const Media = ({ userInfo, myUserId }) => {
   };
 
   useEffect(() => {
-    setMediaURL(userInfo?.media);
+    if (userInfo?.media) {
+      const mediaArray = Array.isArray(userInfo.media)
+        ? userInfo.media
+        : Object.values(userInfo.media);
+      setMediaURL(mediaArray);
+    }
   }, [userInfo]);
+
+  useEffect(() => { console.log() }, [mediaURL]);
 
   return (
     <div className={styles.mediaCardWrapper}>
@@ -64,23 +71,27 @@ const Media = ({ userInfo, myUserId }) => {
         <div
           key={index}
           className={styles.photoCard}
-          onClick={() => history("/feed")}
+          onClick={() => history(`${FEED_ROUTE}/${idParam}`)}
         >
           {item.url &&
             (item.type === "video" ? (
               <>
                 <video
                   className={styles.cardImage}
-                  src={API + item.url + "#t=0.5"} // используем параметр t=0.5 для захвата кадра на 0.5 секунде
-                  poster={API + item.url + "#t=0.5"} // использует тот же кадр для превью
+                  src={API + "/" + item.url + "#t=0.5"}
+                  poster={API + "/" + item.url + "#t=0.5"}
                   alt=""
-                  controls={false} // Убираем элементы управления, чтобы не было воспроизведения
-                  muted // Без звука
+                  controls={false}
+                  muted
                 />
                 <img className={styles.videoIcon} src={camera} alt="" />
               </>
             ) : (
-              <img className={styles.cardImage} src={API + item.url} alt="" />
+              <img
+                className={styles.cardImage}
+                src={API + "/" + item.url}
+                alt=""
+              />
             ))}
         </div>
       ))}
