@@ -13,6 +13,10 @@ input {
   font-size: 1em !important;
 }
 
+input::placeholder {
+  font-size: 0.8em;
+}
+
 h1::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 7px;
