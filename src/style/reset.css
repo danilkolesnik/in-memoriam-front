@@ -9,6 +9,10 @@ a {
   text-decoration: none;
 }
 
+input {
+  font-size: 1em !important;
+}
+
 h1::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 7px;
