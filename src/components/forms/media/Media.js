@@ -6,6 +6,7 @@ import upload from "../../../assets/icons/media-upload.svg";
 import camera from "../../../assets/icons/camera.svg";
 import { API, FEED_ROUTE } from "utils/constants";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Media = ({ userInfo, myUserId, idParam }) => {
   const history = useNavigate();
@@ -60,7 +61,7 @@ const Media = ({ userInfo, myUserId, idParam }) => {
 
         }
       } catch (error) {
-        console.error("Ошибка при загрузке медиафайла:", error);
+        toast.error("На жаль, сталася помилка");
       }
     }
   };

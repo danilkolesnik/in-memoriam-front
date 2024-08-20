@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styles from './bio.module.scss';
 import axios from "axios";
 import { API } from 'utils/constants';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Bio = ({ userInfo, myUserId }) => {
   
@@ -40,7 +42,7 @@ const Bio = ({ userInfo, myUserId }) => {
           localStorage.setItem("userData", JSON.stringify(response.data));
         }
       } catch (error) {
-        console.error("Ошибка при обновлении данных:", error);
+        toast.error("На жаль, сталася помилка");
       }
   }
 
@@ -77,6 +79,15 @@ const Bio = ({ userInfo, myUserId }) => {
           Зберегти
         </button>
       )}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+      />
     </form>
   );
 }

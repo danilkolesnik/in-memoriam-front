@@ -6,6 +6,8 @@ import styles from "./feed.module.scss";
 import { API } from "utils/constants";
 import camera from "../../assets/icons/camera.svg";
 import trash from "../../assets/icons/trash.svg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Feed = () => {
   const { id } = useParams();
@@ -33,7 +35,7 @@ const Feed = () => {
         setUserInfo(response.data);
       }
     } catch (error) {
-      console.error("Ошибка при получении данных пользователя:", error);
+      toast.error("Сталася помилка");
     }
   };
 
@@ -139,6 +141,15 @@ const Feed = () => {
           ))}
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+      />
     </section>
   );
 };

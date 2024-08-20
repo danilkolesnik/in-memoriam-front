@@ -5,6 +5,8 @@ import styles from "./setup.module.scss";
 import Header from "../../components/layouts/header/Header";
 import { DateValidate } from "services/DateValidate";
 import { API, PROFILE_ROUTE } from "utils/constants";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Setup = () => {
   const history = useNavigate();
@@ -44,7 +46,7 @@ const Setup = () => {
         history(`${PROFILE_ROUTE}/${response.data.user.id}`);
       }
     } catch (error) {
-      console.error("Ошибка при обновлении данных:", error);
+      toast.error("Ошибка при обновлении данных:");
     }
   };
 
@@ -135,6 +137,15 @@ const Setup = () => {
           </form>
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+      />
     </section>
   );
 };

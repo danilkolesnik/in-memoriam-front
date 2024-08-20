@@ -43,7 +43,7 @@ const Sidebar = ({ userInfo, isSidebarOpen, setIsSidebarOpen }) => {
         );
 
         if (response.status === 200) {
-          console.log("Данные успешно обновлены:", response.data);
+
           localStorage.setItem("userData", JSON.stringify(response.data));
 
           setCooldownActive(true);
@@ -53,7 +53,7 @@ const Sidebar = ({ userInfo, isSidebarOpen, setIsSidebarOpen }) => {
 
         }
       } catch (error) {
-        console.error("Ошибка при обновлении данных:", error);
+        toast.error("На жаль, сталася помилка");
     }
     
   };

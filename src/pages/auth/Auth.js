@@ -5,6 +5,7 @@ import CryptoJS from "crypto-js";
 import styles from "./auth.module.scss";
 import Header from "../../components/layouts/header/Header";
 import eye from "../../assets/icons/eye.svg";
+import "react-toastify/dist/ReactToastify.css";
 import { API, SETUP_ROUTE, PROFILE_ROUTE } from "utils/constants";
 
 const Auth = ({ isLogin }) => {
@@ -51,8 +52,7 @@ const Auth = ({ isLogin }) => {
         history(`${PROFILE_ROUTE}/${response.data.user.id}`);
       }
     } catch (error) {
-      setError("Неверный логин или пароль.");
-      console.error("Ошибка при входе:", error);
+      setError("Невiрний логiн або пароль.");
     }
   };
 

@@ -9,6 +9,8 @@ import add from "../../assets/icons/add.svg";
 import Bio from "../../components/forms/bio/Bio";
 import Media from "../../components/forms/media/Media";
 import { API, LOG_IN_ROUTE, NOT_FOUND_ROUTE } from "utils/constants";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Profile = () => {
   const { id } = useParams();
@@ -56,7 +58,7 @@ const Profile = () => {
 
         }
       } catch (error) {
-        console.error("Ошибка при получении данных пользователя:", error);
+        toast.error("Сталася помилка");
         navigate(NOT_FOUND_ROUTE); 
       }
     };
@@ -89,7 +91,7 @@ const Profile = () => {
           console.log("Аватар успешно загружен", response.data.avatar);
         }
       } catch (error) {
-        console.error("Ошибка при загрузке аватара:", error);
+        toast.error("На жаль, сталася помилка");
       }
     }
   };
@@ -119,7 +121,7 @@ const Profile = () => {
           console.log("Баннер успешно загружен", response.data.banner);
         }
       } catch (error) {
-        console.error("Ошибка при загрузке баннера:", error);
+        toast.error("На жаль, сталася помилка");
       }
     }
   };
@@ -222,6 +224,15 @@ const Profile = () => {
           setIsSidebarOpen={setIsSidebarOpen}
         />
       )}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+      />
     </section>
   );
 };

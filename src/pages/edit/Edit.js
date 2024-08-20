@@ -5,6 +5,8 @@ import Header from "../../components/layouts/header/Header";
 import axios from "axios";
 import { DateValidate } from "services/DateValidate";
 import { API, PROFILE_ROUTE } from "utils/constants";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Edit = () => {
   const history = useNavigate();
@@ -70,7 +72,7 @@ const Edit = () => {
         history(`${PROFILE_ROUTE}/${myUserId}`);
       }
     } catch (error) {
-      console.error("Ошибка при обновлении данных:", error);
+      toast.error("На жаль, сталася помилка");
     }
   };
 
@@ -156,6 +158,15 @@ const Edit = () => {
           </form>
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+      />
     </section>
   );
 };
