@@ -58,7 +58,7 @@ const Bio = ({ userInfo, myUserId }) => {
           />
           <textarea
             className={styles.textAreaInfo}
-            maxLength="150"
+            maxLength="1000"
             defaultValue={userInfo?.bio}
             onChange={(e) => setBio(e.target.value)}
             readOnly={myUserId !== userInfo?.id}
