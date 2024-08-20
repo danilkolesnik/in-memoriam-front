@@ -9,12 +9,10 @@ a {
   text-decoration: none;
 }
 
-input {
-  font-size: 1em !important;
-}
-
-input::placeholder {
-  font-size: 0.8em;
+input,
+textarea {
+  touch-action: manipulation;
+  font-size: 16px;
 }
 
 h1::-webkit-scrollbar {

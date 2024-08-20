@@ -180,21 +180,6 @@ const Profile = () => {
             </h3>
             <p>
               <span>{userInfo?.birthDate}</span>
-              <svg
-                width="9"
-                height="12"
-                viewBox="0 0 9 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4.7 0.75L4.7 11.25M1.25 3.9L8.45 3.9"
-                  stroke="black"
-                  strokeWidth="0.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
               <span>{userInfo?.passDate}</span>
             </p>
           </div>
