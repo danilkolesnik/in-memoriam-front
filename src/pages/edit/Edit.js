@@ -83,18 +83,6 @@ const Edit = () => {
         <div className={styles.editContainer}>
           <h1 className={styles.editTitle}>Редагування пам’ятного запису</h1>
           <form onSubmit={handleSubmit}>
-            <label className={styles.editLabel} htmlFor="name">
-              Iм'я
-            </label>
-            <input
-              className={styles.editInput}
-              type="text"
-              name="name"
-              placeholder="Назар"
-              defaultValue={userInfo?.firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-            />
             <label className={styles.editLabel} htmlFor="lastname">
               Прiзвище
             </label>
@@ -105,6 +93,18 @@ const Edit = () => {
               placeholder="Павлюк"
               defaultValue={userInfo?.lastName}
               onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+            <label className={styles.editLabel} htmlFor="name">
+              Iм'я
+            </label>
+            <input
+              className={styles.editInput}
+              type="text"
+              name="name"
+              placeholder="Назар"
+              defaultValue={userInfo?.firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               required
             />
             <label className={styles.editLabel} htmlFor="patronymic">

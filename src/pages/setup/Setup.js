@@ -60,18 +60,6 @@ const Setup = () => {
             Почніть з налаштування інформації про вашу близьку людину
           </p>
           <form onSubmit={handleSubmit}>
-            <label className={styles.setupLabel} htmlFor="name">
-              Iм'я
-            </label>
-            <input
-              className={styles.setupInput}
-              type="text"
-              name="name"
-              placeholder="Назар"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-            />
             <label className={styles.setupLabel} htmlFor="lastname">
               Прiзвище
             </label>
@@ -82,6 +70,18 @@ const Setup = () => {
               placeholder="Павлюк"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+            <label className={styles.setupLabel} htmlFor="name">
+              Iм'я
+            </label>
+            <input
+              className={styles.setupInput}
+              type="text"
+              name="name"
+              placeholder="Назар"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               required
             />
             <label className={styles.setupLabel} htmlFor="patronymic">

@@ -109,7 +109,7 @@ const Feed = () => {
         <div className={styles.feedContainer}>
           {userInfo?.media?.map((media, index) => (
             <div key={media.id} className={styles.mediaItem}>
-              {media.url.endsWith(".mp4") || media.url.endsWith(".MOV") ? (
+              {media.type === "video" ? (
                 <>
                   <video
                     ref={(el) => (videoRefs.current[index] = el)}
@@ -119,6 +119,7 @@ const Feed = () => {
                     muted={currentPlaying !== index}
                     loop
                     playsInline
+                    preload="metadata"
                     style={{ cursor: "pointer" }}
                   />
                   <img className={styles.videoIcon} src={camera} alt="" />

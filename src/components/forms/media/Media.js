@@ -110,8 +110,8 @@ const Media = ({ userInfo, myUserId, idParam, isLoading, setIsLoading }) => {
               <>
                 <video
                   className={styles.cardImage}
-                  src={item.url + "#t=0.5"}
-                  poster={item.url + "#t=0.5"}
+                  src={item.url + "#t=0.1"}
+                  poster={item.url + "#t=0.1"}
                   alt=""
                   controls={false}
                   muted
