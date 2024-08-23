@@ -9,6 +9,7 @@ import add from "../../assets/icons/add.svg";
 import Bio from "../../components/forms/bio/Bio";
 import Media from "../../components/forms/media/Media";
 import { API, LOG_IN_ROUTE, NOT_FOUND_ROUTE } from "utils/constants";
+import { Loader } from "ui/Loader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -21,6 +22,7 @@ const Profile = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("bio");
 
+  const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState([]);
   const [avatarURL, setAvatarURL] = useState(null);
   const [bannerURL, setBannerURL] = useState(null);
@@ -55,11 +57,14 @@ const Profile = () => {
             setBannerURL(API + "/" + response.data.banner);
           }
 
+          setIsLoading(false);
+
 
         }
       } catch (error) {
         toast.error("Сталася помилка");
-        navigate(NOT_FOUND_ROUTE); 
+        navigate(NOT_FOUND_ROUTE);
+        setIsLoading(false);
       }
     };
 
@@ -178,7 +183,7 @@ const Profile = () => {
           </div>
           <div className={styles.mainInfoContainer}>
             <h3>
-              {userInfo?.firstName} {userInfo?.lastName} {userInfo?.middleName}
+              {userInfo?.lastName} {userInfo?.firstName} {userInfo?.middleName}
             </h3>
             <p>
               <span>{userInfo?.birthDate}</span>
@@ -212,7 +217,13 @@ const Profile = () => {
               <Bio userInfo={userInfo} myUserId={myUserId} />
             )}
             {activeTab === "media" && (
-              <Media userInfo={userInfo} myUserId={myUserId} idParam={id} />
+              <Media
+                userInfo={userInfo}
+                myUserId={myUserId}
+                idParam={id}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+              />
             )}
           </article>
         </div>
@@ -220,10 +231,12 @@ const Profile = () => {
       {isSidebarOpen && (
         <Sidebar
           userInfo={userInfo}
+          setUserInfo={setUserInfo}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
       )}
+      {isLoading ? <Loader /> : ""}
       <ToastContainer
         position="bottom-right"
         autoClose={5000}

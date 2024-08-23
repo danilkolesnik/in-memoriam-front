@@ -1,5 +1,5 @@
 // export const API = 'http://localhost:5000';
-export const API = "https://api.slan.studio";
+export const API = "https://api.pamyatay.com.ua";
 export const AUTH_ROUTE = "/";
 export const LOG_IN_ROUTE = "/log-in";
 export const SETUP_ROUTE = "/setup";

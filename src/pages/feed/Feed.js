@@ -1,16 +1,19 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "components/layouts/header/Header";
 import styles from "./feed.module.scss";
-import { API } from "utils/constants";
+import { API, LOG_IN_ROUTE } from "utils/constants";
 import camera from "../../assets/icons/camera.svg";
 import trash from "../../assets/icons/trash.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Feed = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
+  const token = localStorage.getItem("token");
+
   const myUserId = JSON.parse(localStorage.getItem("myUserId"));
   const [userInfo, setUserInfo] = useState([]);
 
@@ -30,7 +33,13 @@ const Feed = () => {
       );
 
       if (response.status === 200) {
-        console.log("Информация о пользователе:", response.data);
+        
+        if (response.data.isPrivate && !token) {
+          sessionStorage.setItem("requestedProfileID", id);
+          navigate(LOG_IN_ROUTE);
+          return;
+        }
+
         localStorage.setItem("userData", JSON.stringify(response.data));
         setUserInfo(response.data);
       }
@@ -100,7 +109,7 @@ const Feed = () => {
         <div className={styles.feedContainer}>
           {userInfo?.media?.map((media, index) => (
             <div key={media.id} className={styles.mediaItem}>
-              {media.url.endsWith(".mp4") ? (
+              {media.url.endsWith(".mp4") || media.url.endsWith(".MOV") ? (
                 <>
                   <video
                     ref={(el) => (videoRefs.current[index] = el)}

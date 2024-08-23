@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./media.module.scss";
 import upload from "../../../assets/icons/media-upload.svg";
 import camera from "../../../assets/icons/camera.svg";
+
 import { API, FEED_ROUTE } from "utils/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Media = ({ userInfo, myUserId, idParam }) => {
-  const history = useNavigate();
+const Media = ({ userInfo, myUserId, idParam, isLoading, setIsLoading }) => {
   const [mediaURL, setMediaURL] = useState([]);
-
+  
   const handleAddMedia = async (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
+      setIsLoading(true);
       const url = URL.createObjectURL(selectedFile);
 
       if (selectedFile.type.startsWith("image/")) {
@@ -35,6 +35,7 @@ const Media = ({ userInfo, myUserId, idParam }) => {
         ]);
       } else {
         toast.error('Невiрний тип файлу!');
+        setIsLoading(false);
         return
       }
 
@@ -58,10 +59,12 @@ const Media = ({ userInfo, myUserId, idParam }) => {
 
         if (response.status === 200) {
           console.log("Медиафайл успешно загружен:", response.data);
+          setIsLoading(false);
 
         }
       } catch (error) {
         toast.error("На жаль, сталася помилка");
+        setIsLoading(false);
       }
     }
   };
@@ -83,10 +86,6 @@ const Media = ({ userInfo, myUserId, idParam }) => {
     }
   }, [userInfo]);
 
-  useEffect(() => {
-    console.log(mediaURL);
-  }, [mediaURL]);
-
   return (
     <div className={styles.mediaCardWrapper}>
       {myUserId === userInfo?.id && (
@@ -101,10 +100,10 @@ const Media = ({ userInfo, myUserId, idParam }) => {
         </div>
       )}
       {mediaURL?.map((item, index) => (
-        <div
+        <a
           key={index}
           className={styles.photoCard}
-          onClick={() => history(`${FEED_ROUTE}/${idParam}`)}
+          href={FEED_ROUTE + "/" + idParam}
         >
           {item.url &&
             (item.type === "video" ? (
@@ -116,13 +115,15 @@ const Media = ({ userInfo, myUserId, idParam }) => {
                   alt=""
                   controls={false}
                   muted
+                  onLoadedMetadata={(e) => (e.target.style.display = "block")}
+                  style={{ display: "none" }}
                 />
                 <img className={styles.videoIcon} src={camera} alt="" />
               </>
             ) : (
               <img className={styles.cardImage} src={item.url} alt="" />
             ))}
-        </div>
+        </a>
       ))}
       <ToastContainer
         position="bottom-right"

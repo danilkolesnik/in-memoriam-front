@@ -1,61 +1,61 @@
 import React, { useState, useEffect, useRef } from "react";
-import styles from './sidebar.module.scss';
+import styles from "./sidebar.module.scss";
 import axios from "axios";
-import close from '../../../assets/icons/close.svg';
-import ToggleSwitch from 'ui/ToggleSwitch';
+import close from "../../../assets/icons/close.svg";
+import ToggleSwitch from "ui/ToggleSwitch";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { API } from "utils/constants";
 
-const Sidebar = ({ userInfo, isSidebarOpen, setIsSidebarOpen }) => {
-  
-  const [isPrivate, setIsPrivate] = useState(false);
+const Sidebar = ({
+  userInfo,
+  setUserInfo,
+  isSidebarOpen,
+  setIsSidebarOpen,
+}) => {
+  const [isPrivate, setIsPrivate] = useState(userInfo?.isPrivate);
   const [cooldownActive, setCooldownActive] = useState(false);
   const timeoutRef = useRef(null);
 
   useEffect(() => {
     setIsPrivate(userInfo?.isPrivate);
+    console.log(userInfo);
   }, [userInfo]);
-  
+
   const handleUpdateVisibility = async (checked) => {
     if (cooldownActive) {
-      toast.error('Зачекай, будь ласка!');
-    };
+      toast.error("Зачекай, будь ласка!");
+    }
     if (cooldownActive) return;
-
-    setIsPrivate(checked);
 
     const userData = {
       isPrivate: checked,
     };
 
     try {
-        
-        const response = await axios.patch(
-          `${API}/users/update-info`, 
-          userData,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+      const response = await axios.patch(`${API}/users/update-info`, userData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      });
 
-        if (response.status === 200) {
-
-          localStorage.setItem("userData", JSON.stringify(response.data));
-
-          setCooldownActive(true);
-          timeoutRef.current = setTimeout(() => {
-            setCooldownActive(false); 
-          }, 5000);
-
-        }
-      } catch (error) {
-        toast.error("На жаль, сталася помилка");
+      if (response.status === 200) {
+        localStorage.setItem("userData", JSON.stringify(response.data));
+        setIsPrivate(checked);
+        const updatedUserInfo = {
+          ...userInfo,
+          isPrivate: checked,
+        };
+        setUserInfo(updatedUserInfo);
+        setCooldownActive(true);
+        timeoutRef.current = setTimeout(() => {
+          setCooldownActive(false);
+        }, 5000);
+      }
+    } catch (error) {
+      toast.error("На жаль, сталася помилка");
     }
-    
   };
 
   return (
@@ -87,6 +87,6 @@ const Sidebar = ({ userInfo, isSidebarOpen, setIsSidebarOpen }) => {
       />
     </div>
   );
-}
+};
 
 export default Sidebar;

@@ -11,6 +11,8 @@
 .photoCard {
   position: relative;
   background-color: #F2F2F7;
+  height: auto; /* поддерживает соотношение сторон */
+  object-fit: cover; /* чтобы сохранить масштабирование, без искажения */
   width: 32%;
   padding-bottom: 32%;
   margin-bottom: 1%;
