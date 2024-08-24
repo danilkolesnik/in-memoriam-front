@@ -14,7 +14,6 @@ const Sidebar = ({
   isSidebarOpen,
   setIsSidebarOpen,
 }) => {
-
   const history = useNavigate();
 
   const [isPrivate, setIsPrivate] = useState(userInfo?.isPrivate);
@@ -26,9 +25,8 @@ const Sidebar = ({
   }, [userInfo]);
 
   const handleUpdateVisibility = async (checked) => {
-
     setIsPrivate(checked);
-    
+
     if (cooldownActive) {
       toast.error("Зачекай, будь ласка!");
     }
@@ -66,8 +64,15 @@ const Sidebar = ({
 
   const handleLogOut = () => {
     localStorage.clear();
-    history('/');
+    history("/");
   };
+
+
+  function isSafari() {
+    const ua = navigator.userAgent;
+    return ua.includes('Safari') && !ua.includes('Chrome');
+  }
+  
 
   return (
     <div className={styles.darkOverlay}>
@@ -86,7 +91,7 @@ const Sidebar = ({
             isPrivate={isPrivate}
             handleUpdateVisibility={handleUpdateVisibility}
             label="Приватний профiль"
-          /> */}
+            /> */}
           <div className={styles.contentHorizontalWrapper}>
             <span className={styles.contentLabel} onClick={handleLogOut}>
               Приватний профiль
@@ -109,10 +114,18 @@ const Sidebar = ({
                   hover: "#bbb",
                 },
               }}
-              trackStyle={{height: "30px"}}
+              trackStyle={{ height: "30px" }}
               value={isPrivate}
               onToggle={() => handleUpdateVisibility(!isPrivate)}
             />
+          {isSafari() && (
+            <ToggleButton
+              inactiveLabel={" "}
+              activeLabel={" "}
+              value={isPrivate}
+              onToggle={() => handleUpdateVisibility(!isPrivate)}
+            />
+          )}
           </div>
           <span className={styles.logOut} onClick={handleLogOut}>
             Вийти з акаунту
