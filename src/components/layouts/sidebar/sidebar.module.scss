@@ -29,6 +29,32 @@
   cursor: pointer;
 }
 
+.sidebarContent {
+  margin: 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contentHorizontalWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.contentLabel {
+  font-weight: 600;
+}
+
+.logOut {
+  color: rgb(225, 0, 0);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.trackStyle {
+  height: 40px;
+}
+
 @media screen and (min-width: 550px) {
   .sidebarClose {
     width: 4%;

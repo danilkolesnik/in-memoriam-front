@@ -86,15 +86,6 @@ const Bio = ({ userInfo, myUserId }) => {
         </button>
       )}
 
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        draggable
-      />
     </form>
   );
 };

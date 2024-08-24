@@ -5,7 +5,7 @@ import upload from "../../../assets/icons/media-upload.svg";
 import camera from "../../../assets/icons/camera.svg";
 
 import { API, FEED_ROUTE } from "utils/constants";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Media = ({ userInfo, myUserId, idParam, isLoading, setIsLoading }) => {
@@ -125,15 +125,6 @@ const Media = ({ userInfo, myUserId, idParam, isLoading, setIsLoading }) => {
             ))}
         </a>
       ))}
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        draggable
-      />
     </div>
   );
 };

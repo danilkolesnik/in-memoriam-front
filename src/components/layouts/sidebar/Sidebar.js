@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./sidebar.module.scss";
 import axios from "axios";
 import close from "../../../assets/icons/close.svg";
-import ToggleSwitch from "ui/ToggleSwitch";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { API } from "utils/constants";
+import ToggleButton from "react-toggle-button";
 
 const Sidebar = ({
   userInfo,
@@ -13,16 +14,21 @@ const Sidebar = ({
   isSidebarOpen,
   setIsSidebarOpen,
 }) => {
+
+  const history = useNavigate();
+
   const [isPrivate, setIsPrivate] = useState(userInfo?.isPrivate);
   const [cooldownActive, setCooldownActive] = useState(false);
   const timeoutRef = useRef(null);
 
   useEffect(() => {
     setIsPrivate(userInfo?.isPrivate);
-    console.log(userInfo);
   }, [userInfo]);
 
   const handleUpdateVisibility = async (checked) => {
+
+    setIsPrivate(checked);
+    
     if (cooldownActive) {
       toast.error("Зачекай, будь ласка!");
     }
@@ -58,6 +64,11 @@ const Sidebar = ({
     }
   };
 
+  const handleLogOut = () => {
+    localStorage.clear();
+    history('/');
+  };
+
   return (
     <div className={styles.darkOverlay}>
       <aside className={styles.sidebarContainer}>
@@ -70,21 +81,44 @@ const Sidebar = ({
             onClick={() => setIsSidebarOpen(false)}
           />
         </header>
-        <ToggleSwitch
-          isPrivate={isPrivate}
-          handleUpdateVisibility={handleUpdateVisibility}
-          label="Приватний профiль"
-        />
+        <div className={styles.sidebarContent}>
+          {/* <ToggleSwitch
+            isPrivate={isPrivate}
+            handleUpdateVisibility={handleUpdateVisibility}
+            label="Приватний профiль"
+          /> */}
+          <div className={styles.contentHorizontalWrapper}>
+            <span className={styles.contentLabel} onClick={handleLogOut}>
+              Приватний профiль
+            </span>
+            <ToggleButton
+              inactiveLabel={" "}
+              activeLabel={" "}
+              colors={{
+                activeThumb: {
+                  base: "#FFF",
+                },
+                inactiveThumb: {
+                  base: "#FFF",
+                },
+                active: {
+                  base: "#000",
+                },
+                inactive: {
+                  base: "#bbb",
+                  hover: "#bbb",
+                },
+              }}
+              trackStyle={{height: "30px"}}
+              value={isPrivate}
+              onToggle={() => handleUpdateVisibility(!isPrivate)}
+            />
+          </div>
+          <span className={styles.logOut} onClick={handleLogOut}>
+            Вийти з акаунту
+          </span>
+        </div>
       </aside>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        draggable
-      />
     </div>
   );
 };

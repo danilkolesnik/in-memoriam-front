@@ -17,7 +17,6 @@ import {
   LOG_IN_ROUTE,
 } from "./utils/constants";
 import PrivateRoute from "services/PrivateRoutes";
-
 function App() {
   return (
     <Routes>

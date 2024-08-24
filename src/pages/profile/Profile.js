@@ -10,7 +10,7 @@ import Bio from "../../components/forms/bio/Bio";
 import Media from "../../components/forms/media/Media";
 import { API, LOG_IN_ROUTE, NOT_FOUND_ROUTE } from "utils/constants";
 import { Loader } from "ui/Loader";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Profile = () => {
@@ -237,15 +237,6 @@ const Profile = () => {
         />
       )}
       {isLoading ? <Loader /> : ""}
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        draggable
-      />
     </section>
   );
 };

@@ -5,7 +5,7 @@ import styles from "./setup.module.scss";
 import Header from "../../components/layouts/header/Header";
 import { DateValidate } from "services/DateValidate";
 import { API, PROFILE_ROUTE } from "utils/constants";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Setup = () => {
@@ -137,7 +137,7 @@ const Setup = () => {
           </form>
         </div>
       </div>
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-right"
         autoClose={5000}
         hideProgressBar={false}
@@ -145,7 +145,7 @@ const Setup = () => {
         closeOnClick
         rtl={false}
         draggable
-      />
+      /> */}
     </section>
   );
 };
