@@ -67,13 +67,6 @@ const Sidebar = ({
     history("/");
   };
 
-
-  function isSafari() {
-    const ua = navigator.userAgent;
-    return ua.includes('Safari') && !ua.includes('Chrome');
-  }
-  
-
   return (
     <div className={styles.darkOverlay}>
       <aside className={styles.sidebarContainer}>
@@ -87,45 +80,45 @@ const Sidebar = ({
           />
         </header>
         <div className={styles.sidebarContent}>
+
+          
           {/* <ToggleSwitch
             isPrivate={isPrivate}
             handleUpdateVisibility={handleUpdateVisibility}
             label="Приватний профiль"
             /> */}
           <div className={styles.contentHorizontalWrapper}>
-            <span className={styles.contentLabel} onClick={handleLogOut}>
-              Приватний профiль
-            </span>
+          <span className={styles.contentLabel} onClick={handleLogOut}>
+          Приватний профiль
+        </span>
+ 
+            
+          {true && (
             <ToggleButton
-              inactiveLabel={" "}
-              activeLabel={" "}
-              colors={{
-                activeThumb: {
-                  base: "#FFF",
-                },
-                inactiveThumb: {
-                  base: "#FFF",
-                },
-                active: {
-                  base: "#000",
-                },
-                inactive: {
-                  base: "#bbb",
-                  hover: "#bbb",
-                },
-              }}
-              trackStyle={{ height: "30px" }}
-              value={isPrivate}
-              onToggle={() => handleUpdateVisibility(!isPrivate)}
-            />
-          {isSafari() && (
-            <ToggleButton
-              inactiveLabel={" "}
-              activeLabel={" "}
-              value={isPrivate}
-              onToggle={() => handleUpdateVisibility(!isPrivate)}
+            inactiveLabel={" "}
+            activeLabel={" "}
+            colors={{
+              activeThumb: {
+                base: "#FFF",
+              },
+              inactiveThumb: {
+                base: "#FFF",
+              },
+              active: {
+                base: "#000",
+              },
+              inactive: {
+                base: "#bbb",
+                hover: "#bbb",
+              },
+            }}
+            trackStyle={{ height: "30px" }}
+            value={isPrivate}
+            onToggle={() => handleUpdateVisibility(!isPrivate)}
             />
           )}
+
+       
           </div>
           <span className={styles.logOut} onClick={handleLogOut}>
             Вийти з акаунту
