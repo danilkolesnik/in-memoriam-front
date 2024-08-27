@@ -5,7 +5,7 @@ import { API } from "utils/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Bio = ({ userInfo, myUserId }) => {
+const Bio = ({ userInfo, setUserInfo, myUserId }) => {
   const [quote, setQuote] = useState("");
   const [bio, setBio] = useState("");
   const [isChanged, setIsChanged] = useState(false);
@@ -43,6 +43,13 @@ const Bio = ({ userInfo, myUserId }) => {
       });
 
       if (response.status === 200) {
+        const updatedUserInfo = {
+          ...userInfo,
+          id: userInfo?.id,
+          bio,
+          quote,
+        };
+        setUserInfo(updatedUserInfo);
         toast.success("Успiшно оновлено!");
         localStorage.setItem("userData", JSON.stringify(response.data));
         setIsChanged(false);

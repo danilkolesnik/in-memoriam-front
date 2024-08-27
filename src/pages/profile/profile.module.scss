@@ -103,6 +103,8 @@
   margin-top: 5px;
 }
 
+
+
 .mainInfoContainer span {
   color: #000;
   font-size: 1.1em;
@@ -182,5 +184,12 @@
   
   .textAreaInfo {
     padding: 2%;
+  }
+}
+
+@media screen and (min-width: 550px) and (max-height: 850px) {
+  .mainInfoContainer {
+    text-align: left;
+    margin: 15vh 5% 5vh;
   }
 }

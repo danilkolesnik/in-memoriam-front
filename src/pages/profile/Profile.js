@@ -214,7 +214,7 @@ const Profile = () => {
               </div>
             </header>
             {activeTab === "bio" && (
-              <Bio userInfo={userInfo} myUserId={myUserId} />
+              <Bio userInfo={userInfo} setUserInfo={setUserInfo} myUserId={myUserId} />
             )}
             {activeTab === "media" && (
               <Media
