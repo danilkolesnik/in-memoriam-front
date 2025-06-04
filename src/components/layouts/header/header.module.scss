@@ -1,0 +1,28 @@
+
+.headerWrapper {
+  height: 10vh;
+  border-bottom: 2px solid #efefef;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.headerLogo {
+  width: 50%;
+  cursor: pointer;
+}
+
+.settingsIcon {
+  position: absolute;
+  width: 2em;
+  right: 5%;
+  cursor: pointer;
+}
+
+.returnIcon {
+  position: absolute;
+  width: 1em;
+  left: 5%;
+  cursor: pointer;
+}

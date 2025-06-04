@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./style/reset.css";
+import "./style/fonts.css";
+import Auth from "./pages/auth/Auth";
+import Setup from "pages/setup/Setup";
+import Edit from "pages/edit/Edit";
+import Profile from "pages/profile/Profile";
+import Feed from "pages/feed/Feed";
+import NotFound from "pages/notfound/NotFound";
+import { Route, Routes } from "react-router-dom";
+import {
+  AUTH_ROUTE,
+  SETUP_ROUTE,
+  EDIT_ROUTE,
+  PROFILE_ROUTE,
+  FEED_ROUTE,
+  NOT_FOUND_ROUTE,
+  LOG_IN_ROUTE,
+} from "./utils/constants";
+import PrivateRoute from "services/PrivateRoutes";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path={AUTH_ROUTE} element={<Auth />} />
+      <Route path={LOG_IN_ROUTE} element={<Auth isLogin />} />
+      <Route path={SETUP_ROUTE} element={<PrivateRoute component={Setup} />} />
+      <Route path={EDIT_ROUTE} element={<PrivateRoute component={Edit} />} />
+      <Route path={`${FEED_ROUTE}/:id`} element={<Feed />} />
+      <Route path={`${PROFILE_ROUTE}/:id`} element={<Profile />} />
+      <Route path={NOT_FOUND_ROUTE} element={<NotFound />} />
+    </Routes>
   );
 }
 
